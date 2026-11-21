@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn tập từ vựng</title>
+<style>
+:root{--yellow:#F4D00F;--brown:#3D1F20;--cream:#FBEB9D;--white:#fff;--ink:#2b2525;--muted:#776c6c;--line:#e8dfc7;--soft:#fff9df;--green:#24734d;--red:#a13b36}
+*{box-sizing:border-box} body{margin:0;background:#fffdf5;color:var(--ink);font-family:Arial,"Be Vietnam Pro",sans-serif;line-height:1.5}
+header{background:var(--yellow);border-bottom:3px solid var(--brown);padding:16px}
+.wrap{max-width:940px;margin:auto;padding:0 16px}
+.brand{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--brown)}
+h1{margin:0;font-size:clamp(24px,4vw,36px);line-height:1.15;color:var(--brown)}
+header p{margin:8px 0 0;color:#4a3030}
+main{padding:14px 0 32px}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 3px 12px #3d1f2008}
+h2{font-size:18px;margin:0 0 12px;color:var(--brown)}h3{font-size:15px;margin:0 0 8px;color:var(--brown)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.field{flex:1;min-width:190px}
+label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+select,input,textarea{width:100%;font:inherit;border:1px solid #d8cda9;border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink)}
+textarea{min-height:150px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:11px 15px;cursor:pointer;transition:transform .08s,opacity .15s}
+button:active{transform:scale(.98)}button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--brown);color:white}.yellow{background:var(--yellow);color:var(--brown)}.light{background:#f7f0d7;color:var(--brown);border:1px solid #e7dbb3}.danger{background:#fff0ee;color:var(--red);border:1px solid #f1cbc7}
+.small{font-size:12px;color:var(--muted)}.note{background:var(--soft);border-left:4px solid var(--yellow);padding:11px 13px;border-radius:8px;font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{background:#f4eedb;color:var(--brown)}.tab.active{background:var(--brown);color:white}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat{background:#fff9e4;border:1px solid #f0e3ad;border-radius:12px;padding:10px;text-align:center}.stat strong{display:block;font-size:22px;color:var(--brown)}.stat span{font-size:11px;color:var(--muted)}
+.progress{height:7px;border-radius:99px;background:#eee7d5;overflow:hidden;margin:12px 0}.progress div{height:100%;width:0;background:var(--yellow);transition:width .2s}
+.card{min-height:245px;border:2px solid var(--yellow);border-radius:18px;background:linear-gradient(150deg,#fffdf4,#fff7d4);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;cursor:pointer;position:relative}
+.card .hint{font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}.word{font-size:clamp(28px,6vw,42px);font-weight:800;color:var(--brown);margin:12px 0}.meaning{font-size:22px;font-weight:700}.example{margin-top:12px;max-width:620px;font-size:14px}
+.card-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-bottom:8px}.prompt{font-size:clamp(20px,4vw,28px);font-weight:800;color:var(--brown);margin:12px 0 18px;overflow-wrap:anywhere}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px}.option{background:#fff;border:1px solid #e2d7b8;text-align:left;min-height:52px;color:var(--ink)}.option:hover{border-color:var(--yellow);background:#fffbed}.option.correct{border-color:#72b38e;background:#eaf7ef;color:#185c38}.option.wrong{border-color:#df9994;background:#fff0ee;color:#8c2d29}
+.feedback{margin-top:12px;padding:12px;border-radius:10px;background:#f7f0d7;font-size:14px}.feedback.good{background:#eaf7ef;color:#185c38}.feedback.bad{background:#fff0ee;color:#8c2d29}
+.hidden{display:none!important}.footer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.status{font-size:13px;margin-top:8px}.list{margin:8px 0 0;padding-left:20px}.list li{margin:4px 0}
+@media(max-width:560px){.wrap{padding:0 12px}.panel{padding:14px}.options{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.stat strong{font-size:19px}.card{min-height:220px}header{padding:18px 12px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Ôn tập từ vựng</h1></div></header>
+<main class="wrap">
+<section class="panel">
+  <h2>Chọn tính năng ôn tập</h2>
+  <div class="row">
+    <div class="field"><label for="lesson">Ôn tập bài 1 đến bài</label><select id="lesson"></select></div>
+    <div class="field"><label for="mode">Hình thức luyện tập</label><select id="mode"><option value="mixed">Ôn tập tổng hợp: trắc nghiệm + trả lời ngắn</option><option value="quiz">Chỉ trắc nghiệm</option><option value="short">Chỉ trả lời ngắn</option><option value="cards">Flashcard lật thẻ</option></select></div>
+    <div><button class="primary" id="start">Bắt đầu ôn tập</button></div>
+  </div>
+</section>
+
+<section class="panel hidden" id="practice">
+  <div class="quiz-top"><span id="sessionTitle">Ôn tập tích lũy</span><span id="counter">Câu 1</span></div>
+  <div class="progress"><div id="progressFill"></div></div>
+  <div id="quizArea">
+    <div class="prompt" id="question"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <div class="footer-actions"><button class="primary hidden" id="next">Câu tiếp theo</button><button class="light" id="exit">Kết thúc phiên</button></div>
+  </div>
+  <div id="cardArea" class="hidden">
+    <div class="card" id="flashcard" tabindex="0" role="button" aria-label="Lật thẻ từ vựng">
+      <div class="hint" id="cardHint">TỪ TIẾNG HÀN</div><div class="word" id="cardWord"></div><div class="meaning hidden" id="cardMeaning"></div><div class="example hidden" id="cardExample"></div><div class="small" style="margin-top:20px" id="flipHint">Chạm vào thẻ để xem nghĩa</div>
+    </div>
+    <div class="card-actions"><button class="danger" id="needReview">Cần ôn lại</button><button class="yellow" id="remembered">Đã nhớ</button><button class="light" id="cardNext">Thẻ tiếp theo</button></div>
+  </div>
+  <div id="resultArea" class="hidden">
+    <h2>Hoàn thành phiên ôn tập</h2><div class="stats">
+      <div class="stat"><strong id="resultCorrect">0</strong><span>ĐÚNG / ĐÃ NHỚ</span></div>
+      <div class="stat"><strong id="resultWrong">0</strong><span>CÂU SAI</span></div>
+      <div class="stat"><strong id="resultNeed">0</strong><span>TỪ CẦN ÔN</span></div>
+    </div>
+    <div id="reviewWords"></div>
+    <div class="footer-actions"><button class="primary" id="retry">Ôn lại từ chưa nhớ</button><button class="yellow" id="restart">Làm lại toàn bộ</button><button class="light" id="backConfig">Chọn phạm vi khác</button></div>
+  </div>
+</section>
+
+<section class="panel hidden" aria-hidden="true">
+  <h2>Ngân hàng từ vựng</h2>
+  <p class="small">Dán hoặc chỉnh sửa dữ liệu theo mẫu: <b>Bài số | Từ tiếng Hàn | Nghĩa tiếng Việt | Ví dụ (không bắt buộc)</b>. Mỗi từ một dòng. Nên dùng một ngân hàng từ vựng chung cho cả khóa để mỗi tuần chỉ cần đổi bài ôn tập.</p>
+  <textarea id="bank" spellcheck="false" aria-label="Ngân hàng từ vựng">1 | 바닷가 | bãi biển
+1 | 다녀오다 | đi về
+1 | 모래 | cát
+1 | 적다 | ít
+1 | 조용하다 | yên tĩnh
+1 | 조개 | con sò
+1 | 해변 | bờ biển
+1 | 파도 | sóng
+1 | 수영복 | đồ bơi
+1 | 해수욕장 | bãi tắm
+2 | 기타 | đàn ghi-ta
+2 | 물론 | tất nhiên
+2 | 태권도 | Taekwondo
+2 | 아직 | vẫn chưa
+2 | 닮다 | giống
+2 | 감상하다 | thưởng thức
+2 | 탁구 | bóng bàn
+2 | 동전 | đồng xu
+2 | 모으다 | góp/sưu tập
+2 | 음악 감상하기 | thưởng thức âm nhạc
+2 | 게임하기 | chơi game
+2 | 탁구 치기 | chơi bóng bàn
+2 | 동전 모으기 | sưu tập tiền xu
+2 | 편지 쓰기 | viết thư
+2 | 영화 감상하기 | xem phim
+3 | 설날 | ngày Tết
+3 | 댁 | nhà (kính ngữ)
+3 | 세배하다 | chúc Tết
+3 | 떡국 | canh bánh Ttok
+3 | 세뱃돈 | tiền lì xì
+3 | 명절 | ngày lễ tết
+3 | 추석 | trung thu
+3 | 송편 | bánh Songpyeon
+3 | 한복 | quần áo hanbok
+3 | 윷놀이 | trò chơi Yut
+4 | 원숭이 | con khỉ
+4 | 바나나 | chuối
+4 | 과자 | bánh
+4 | 동물 | con vật
+4 | 입다 | mặc
+4 | 신다 | đi (giày, dép)
+4 | 벗다 | cởi
+4 | 끼다 | đeo (nhẫn, găng tay)
+4 | 쓰다 | đội (mũ, nón)
+5 | 맞다 | đúng
+5 | 놀이공원 | công viên vui chơi
+5 | 복잡하다 | phức tạp
+5 | 정류장 | bến xe
+5 | 도착하다 | đến nơi
+5 | 그저께 | hôm kia
+5 | 모레 | ngày kia
+5 | 글피 | ngày kìa
+5 | 작년 | năm ngoái
+5 | 내년 | năm sau
+6 | 기분 | tâm trạng
+6 | 계속 | liên tục
+6 | 재미없다 | chán, không thú vị
+6 | 심심하다 | buồn chán
+6 | 화가 나다 | giận dữ
+6 | 슬프다 | buồn
+6 | 부끄럽다 | xấu hổ
+6 | 미안하다 | có lỗi, xin lỗi
+7 | 계절 | mùa
+7 | 봄 | xuân
+7 | 여름 | hạ
+7 | 가을 | thu
+7 | 겨울 | đông
+7 | 눈사람 | người tuyết
+7 | 눈싸움 | chơi ném tuyết
+7 | 눈썰매 | trượt tuyết
+7 | 시원하다 | mát mẻ
+7 | 아름답다 | đẹp
+7 | 덥다 | nóng
+7 | 춥다 | lạnh
+7 | 차갑다 | lạnh (cảm giác đồ vật)
+7 | 즐겁다 | thú vị, vui vẻ
+8 | 버스 | xe buýt
+8 | 시내 | trung tâm thành phố
+8 | 만나다 | gặp
+8 | 서점 | hiệu sách
+8 | 타다 | đi, lên (xe)
+8 | 택시 | tắc xi
+8 | 자동차 | xe hơi
+8 | 오토바이 | xe máy
+8 | 기차 | tàu hỏa
+8 | 비행기 | máy bay
+8 | 배 | tàu thủy, thuyền
+8 | 지하철 | tàu điện ngầm
+9 | 도시락 | cơm hộp
+9 | 간식 | đồ ăn vặt
+9 | 출발하다 | xuất phát
+9 | 돗자리 | chiếu
+9 | 카메라 | máy ảnh
+9 | 김밥 | cơm lá kim
+9 | 우산 | ô đi mưa
+10 | 불꽃놀이 | pháo hoa
+10 | 축제 | lễ hội
+10 | 등 | vân vân
+10 | 여러 | nhiều
+10 | 구경하다 | ngắm, tham quan
+10 | 공연 | công diễn
+10 | 전시회 | hội triển lãm
+10 | 행사 | sự kiện
+10 | 프로그램 | chương trình
+11 | 박물관 | bảo tàng
+11 | 견학 | kiến học, học tập thực tế
+11 | 역사 | lịch sử
+11 | 알다 | biết
+11 | 신기하다 | kì lạ
+11 | 물건 | đồ vật
+11 | 민속촌 | làng văn hóa dân gian
+11 | 소방서 | trạm cứu hỏa
+11 | 미술관 | viện mỹ thuật
+11 | 식물원 | vườn thực vật
+12 | 감기 | cảm
+12 | 기침 | ho
+12 | 열 | sốt
+12 | 콧물 | nước mũi
+12 | 머리가 아프다 | đau đầu
+12 | 머리 | đầu
+12 | 눈 | mắt
+12 | 코 | mũi
+12 | 입 | miệng
+12 | 귀 | tai
+12 | 목 | cổ
+12 | 배 | bụng
+12 | 팔 | cánh tay
+12 | 손 | bàn tay
+12 | 다리 | chân
+12 | 발 | bàn chân
+13 | 건강 | sức khỏe
+13 | 지키다 | giữ
+13 | 방법 | phương pháp
+13 | 더럽다 | bẩn
+13 | 오래 | lâu
+13 | 눕다 | nằm
+13 | 골고루 | đều đặn
+13 | 가까이 | gần
+14 | 좀 | làm ơn
+14 | 바꾸다 | đổi, chuyển máy
+14 | 잠깐 | một lúc
+14 | 기다리다 | chờ đợi
+14 | 가져가다 | mang đi
+14 | 전화를 끊다 | cúp máy
+14 | 전화(를) 잘못 걸다 | gọi nhầm số
+14 | 통화하다 | nói chuyện điện thoại
+14 | 통화 중이다 | đang nói chuyện điện thoại
+15 | 예습 | học trước
+15 | 복습 | luyện tập, ôn tập
+15 | 받아쓰기 | viết chính tả
+15 | 부르다 | hát
+15 | 다르다 | khác
+15 | 빠르다 | nhanh
+15 | 모르다 | không biết
+15 | 고르다 | lựa chọn
+15 | 자르다 | cắt
+15 | 마르다 | khô, khát</textarea>
+  <div class="footer-actions"><button class="primary" id="saveBank">Lưu ngân hàng từ vựng</button><button class="light" id="downloadBank">Tải dữ liệu TXT</button><button class="light" id="loadSample">Khôi phục dữ liệu Excel</button></div>
+  <div class="status" id="bankStatus" aria-live="polite"></div>
+  <p class="small">Lưu ý: dữ liệu đang hiển thị là dữ liệu mẫu để minh họa chức năng, chưa phải toàn bộ từ vựng giáo trình Hi Korean. Hãy thay bằng danh sách từ vựng chuẩn của trung tâm trước khi gửi cho học viên.</p>
+</section>
+<section class="panel">
+  <h2>03 · Cách dùng hằng tuần</h2>
+  <ol class="list">
+    <li>Nhập đầy đủ từ vựng từng bài vào ngân hàng và nhấn <b>Lưu ngân hàng từ vựng</b>.</li>
+    <li>Cuối tuần, chọn <b>Ôn tập bài 1 đến bài N</b> theo tiến độ lớp.</li>
+    <li>Học viên có thể làm trắc nghiệm, tự gõ câu trả lời ngắn hoặc lật flashcard.</li>
+    <li>Trong bài kiểm tra, đáp án sai sẽ được hỏi lại sau 2 câu khác; cuối phiên có danh sách từ cần ôn.</li>
+  </ol>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const SAMPLE=`1 | 바닷가 | bãi biển
+1 | 다녀오다 | đi về
+1 | 모래 | cát
+1 | 적다 | ít
+1 | 조용하다 | yên tĩnh
+1 | 조개 | con sò
+1 | 해변 | bờ biển
+1 | 파도 | sóng
+1 | 수영복 | đồ bơi
+1 | 해수욕장 | bãi tắm
+2 | 기타 | đàn ghi-ta
+2 | 물론 | tất nhiên
+2 | 태권도 | Taekwondo
+2 | 아직 | vẫn chưa
+2 | 닮다 | giống
+2 | 감상하다 | thưởng thức
+2 | 탁구 | bóng bàn
+2 | 동전 | đồng xu
+2 | 모으다 | góp/sưu tập
+2 | 음악 감상하기 | thưởng thức âm nhạc
+2 | 게임하기 | chơi game
+2 | 탁구 치기 | chơi bóng bàn
+2 | 동전 모으기 | sưu tập tiền xu
+2 | 편지 쓰기 | viết thư
+2 | 영화 감상하기 | xem phim
+3 | 설날 | ngày Tết
+3 | 댁 | nhà (kính ngữ)
+3 | 세배하다 | chúc Tết
+3 | 떡국 | canh bánh Ttok
+3 | 세뱃돈 | tiền lì xì
+3 | 명절 | ngày lễ tết
+3 | 추석 | trung thu
+3 | 송편 | bánh Songpyeon
+3 | 한복 | quần áo hanbok
+3 | 윷놀이 | trò chơi Yut
+4 | 원숭이 | con khỉ
+4 | 바나나 | chuối
+4 | 과자 | bánh
+4 | 동물 | con vật
+4 | 입다 | mặc
+4 | 신다 | đi (giày, dép)
+4 | 벗다 | cởi
+4 | 끼다 | đeo (nhẫn, găng tay)
+4 | 쓰다 | đội (mũ, nón)
+5 | 맞다 | đúng
+5 | 놀이공원 | công viên vui chơi
+5 | 복잡하다 | phức tạp
+5 | 정류장 | bến xe
+5 | 도착하다 | đến nơi
+5 | 그저께 | hôm kia
+5 | 모레 | ngày kia
+5 | 글피 | ngày kìa
+5 | 작년 | năm ngoái
+5 | 내년 | năm sau
+6 | 기분 | tâm trạng
+6 | 계속 | liên tục
+6 | 재미없다 | chán, không thú vị
+6 | 심심하다 | buồn chán
+6 | 화가 나다 | giận dữ
+6 | 슬프다 | buồn
+6 | 부끄럽다 | xấu hổ
+6 | 미안하다 | có lỗi, xin lỗi
+7 | 계절 | mùa
+7 | 봄 | xuân
+7 | 여름 | hạ
+7 | 가을 | thu
+7 | 겨울 | đông
+7 | 눈사람 | người tuyết
+7 | 눈싸움 | chơi ném tuyết
+7 | 눈썰매 | trượt tuyết
+7 | 시원하다 | mát mẻ
+7 | 아름답다 | đẹp
+7 | 덥다 | nóng
+7 | 춥다 | lạnh
+7 | 차갑다 | lạnh (cảm giác đồ vật)
+7 | 즐겁다 | thú vị, vui vẻ
+8 | 버스 | xe buýt
+8 | 시내 | trung tâm thành phố
+8 | 만나다 | gặp
+8 | 서점 | hiệu sách
+8 | 타다 | đi, lên (xe)
+8 | 택시 | tắc xi
+8 | 자동차 | xe hơi
+8 | 오토바이 | xe máy
+8 | 기차 | tàu hỏa
+8 | 비행기 | máy bay
+8 | 배 | tàu thủy, thuyền
+8 | 지하철 | tàu điện ngầm
+9 | 도시락 | cơm hộp
+9 | 간식 | đồ ăn vặt
+9 | 출발하다 | xuất phát
+9 | 돗자리 | chiếu
+9 | 카메라 | máy ảnh
+9 | 김밥 | cơm lá kim
+9 | 우산 | ô đi mưa
+10 | 불꽃놀이 | pháo hoa
+10 | 축제 | lễ hội
+10 | 등 | vân vân
+10 | 여러 | nhiều
+10 | 구경하다 | ngắm, tham quan
+10 | 공연 | công diễn
+10 | 전시회 | hội triển lãm
+10 | 행사 | sự kiện
+10 | 프로그램 | chương trình
+11 | 박물관 | bảo tàng
+11 | 견학 | kiến học, học tập thực tế
+11 | 역사 | lịch sử
+11 | 알다 | biết
+11 | 신기하다 | kì lạ
+11 | 물건 | đồ vật
+11 | 민속촌 | làng văn hóa dân gian
+11 | 소방서 | trạm cứu hỏa
+11 | 미술관 | viện mỹ thuật
+11 | 식물원 | vườn thực vật
+12 | 감기 | cảm
+12 | 기침 | ho
+12 | 열 | sốt
+12 | 콧물 | nước mũi
+12 | 머리가 아프다 | đau đầu
+12 | 머리 | đầu
+12 | 눈 | mắt
+12 | 코 | mũi
+12 | 입 | miệng
+12 | 귀 | tai
+12 | 목 | cổ
+12 | 배 | bụng
+12 | 팔 | cánh tay
+12 | 손 | bàn tay
+12 | 다리 | chân
+12 | 발 | bàn chân
+13 | 건강 | sức khỏe
+13 | 지키다 | giữ
+13 | 방법 | phương pháp
+13 | 더럽다 | bẩn
+13 | 오래 | lâu
+13 | 눕다 | nằm
+13 | 골고루 | đều đặn
+13 | 가까이 | gần
+14 | 좀 | làm ơn
+14 | 바꾸다 | đổi, chuyển máy
+14 | 잠깐 | một lúc
+14 | 기다리다 | chờ đợi
+14 | 가져가다 | mang đi
+14 | 전화를 끊다 | cúp máy
+14 | 전화(를) 잘못 걸다 | gọi nhầm số
+14 | 통화하다 | nói chuyện điện thoại
+14 | 통화 중이다 | đang nói chuyện điện thoại
+15 | 예습 | học trước
+15 | 복습 | luyện tập, ôn tập
+15 | 받아쓰기 | viết chính tả
+15 | 부르다 | hát
+15 | 다르다 | khác
+15 | 빠르다 | nhanh
+15 | 모르다 | không biết
+15 | 고르다 | lựa chọn
+15 | 자르다 | cắt
+15 | 마르다 | khô, khát`;
+let vocab=[], session=[], queue=[], idx=0, mode='quiz', current=null, revealed=false, questionType='quiz';
+let correct=0, wrong=0, asked=0, missed=new Map(), seen=new Set(), answered=false;
+function parseBank(){
+ const lines=$('bank').value.split(/\r?\n/); const out=[];
+ lines.forEach((line,i)=>{if(!line.trim()||line.trim().startsWith('#'))return;const p=line.split('|').map(x=>x.trim());if(p.length<3)return;
+ const lesson=parseInt(p[0],10);if(!Number.isFinite(lesson)||lesson<1||!p[1]||!p[2])return;
+ out.push({id:`${lesson}-${i}-${p[1]}`,lesson,ko:p[1],vi:p[2],ex:p.slice(3).join(' | ')||''});
+ }); return out;
+}
+function refreshBank(){
+ vocab=parseBank(); const max=Math.max(15,...vocab.map(v=>v.lesson),parseInt($('lesson').value||1,10));
+ const old=parseInt($('lesson').value||1,10); $('lesson').innerHTML='';
+ for(let i=1;i<=max;i++){let o=document.createElement('option');o.value=i;o.textContent=`Ôn tập bài 1 đến bài ${i}`;$('lesson').appendChild(o)}
+ $('lesson').value=Math.min(old,max);
+ updateStats();
+}
+function updateStats(){let n=+ $('lesson').value||1;let subset=vocab.filter(v=>v.lesson<=n);const a=$('vocabCount'),b=$('lessonCount'),c=$('bankCount');if(a)a.textContent=subset.length;if(b)b.textContent=new Set(subset.map(v=>v.lesson)).size;if(c)c.textContent=vocab.length;}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function norm(s){return (s||'').toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^\p{L}\p{N}]+/gu,' ').trim().replace(/\s+/g,' ')}
+function sameAnswer(input,expected){let a=norm(input), variants=expected.split(/[;,/]/).map(norm).filter(Boolean);return variants.some(v=>a===v || (v.length>=5 && (a.includes(v)||v.includes(a))))}
+function begin(items,chosenMode){
+ if(!items.length){alert('Chưa có từ vựng trong phạm vi này. Hãy kiểm tra ngân hàng từ vựng.');return}
+ mode=chosenMode;session=shuffle(items);queue=[...session];idx=0;correct=0;wrong=0;asked=0;missed=new Map();seen=new Set();answered=false;revealed=false;
+ $('practice').classList.remove('hidden');$('resultArea').classList.add('hidden');$('quizArea').classList.toggle('hidden',mode==='cards');$('cardArea').classList.toggle('hidden',mode!=='cards');
+ $('sessionTitle').textContent=`Ôn tập bài 1–${$('lesson').value} · ${items.length} từ`;
+ if(mode==='cards')showCard();else showQuestion();$('practice').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function getPrompt(v){return questionType==='short'?`Hãy viết nghĩa tiếng Việt của từ: ${v.ko}`:`${v.ko} có nghĩa là gì?`;}
+function showQuestion(){
+ if(idx>=queue.length){finish();return}
+ current=queue[idx];answered=false;asked++;questionType=(mode==='mixed'?(asked%2===0?'short':'quiz'):mode);$('counter').textContent=`Lượt ${asked} · ${Math.min(idx+1,queue.length)}/${queue.length}`;
+ $('progressFill').style.width=`${Math.min(100,idx/Math.max(1,queue.length)*100)}%`;
+ $('question').textContent=getPrompt(current);$('feedback').className='feedback hidden';$('feedback').textContent='';$('next').classList.add('hidden');
+ if(questionType==='short'){
+  $('options').innerHTML='';let wrap=document.createElement('div');wrap.style.display='flex';wrap.style.gap='8px';wrap.style.flexWrap='wrap';
+  let inp=document.createElement('input');inp.id='shortAnswer';inp.placeholder='Nhập nghĩa tiếng Việt…';inp.style.flex='1';inp.style.minWidth='180px';inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkShort()});
+  let btn=document.createElement('button');btn.className='primary';btn.textContent='Kiểm tra';btn.onclick=checkShort;wrap.append(inp,btn);$('options').append(wrap);setTimeout(()=>inp.focus(),80);
+ }else{
+  let candidates=shuffle(session.filter(v=>v.id!==current.id)).slice(0,3);let choices=shuffle([current,...candidates]).map(v=>({label:v.vi.split(/[;,]/)[0].trim(),id:v.id}));
+  $('options').innerHTML='';choices.forEach((c,i)=>{let b=document.createElement('button');b.className='option';b.textContent=`${String.fromCharCode(65+i)}. ${c.label}`;b.onclick=()=>checkChoice(c,b);$('options').appendChild(b)});
+ }
+}
+function markWrong(v){wrong++;missed.set(v.id,v);let insertAt=Math.min(idx+3,queue.length);queue.splice(insertAt,0,v)}
+function showFeedback(ok,text){$('feedback').className='feedback '+(ok?'good':'bad');$('feedback').textContent=text;$('feedback').classList.remove('hidden');$('next').classList.remove('hidden');}
+function checkChoice(c,button){
+ if(answered)return;answered=true;let ok=c.id===current.id;document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+ if(ok){correct++;seen.add(current.id);button.classList.add('correct');showFeedback(true,`Chính xác! ${current.ko} = ${current.vi}`)}
+ else{button.classList.add('wrong');document.querySelectorAll('.option').forEach(b=>{if(b.textContent.slice(3).trim()===current.vi.split(/[;,]/)[0].trim())b.classList.add('correct')});markWrong(current);showFeedback(false,`Đáp án: ${current.ko} = ${current.vi}. Từ này sẽ quay lại sau 2 câu khác.`)}
+ if(current.ex)$('feedback').textContent+=` Ví dụ: ${current.ex}`;
+ $('counter').textContent=`Đã trả lời ${asked} câu`;
+}
+function checkShort(){
+ if(answered)return;let inp=$('shortAnswer');if(!inp)return;let val=inp.value.trim();if(!val){inp.focus();return}
+ answered=true;let ok=sameAnswer(val,current.vi);inp.disabled=true;let btn=$('options').querySelector('button');if(btn)btn.disabled=true;
+ if(ok){correct++;seen.add(current.id);showFeedback(true,`Chính xác! ${current.ko} = ${current.vi}`)}
+ else{markWrong(current);showFeedback(false,`Đáp án tham khảo: ${current.vi}. Từ này sẽ quay lại sau 2 câu khác.`)}
+ if(current.ex)$('feedback').textContent+=` Ví dụ: ${current.ex}`;
+}
+function nextQuestion(){if(!answered)return;idx++;showQuestion()}
+function showCard(){
+ if(idx>=session.length){finish();return}
+ current=session[idx];revealed=false;$('counter').textContent=`Thẻ ${idx+1}/${session.length}`;$('progressFill').style.width=`${idx/session.length*100}%`;
+ $('cardHint').textContent='TỪ TIẾNG HÀN';$('cardWord').textContent=current.ko;$('cardMeaning').textContent=current.vi;$('cardExample').textContent=current.ex?`Ví dụ: ${current.ex}`:'';
+ $('cardMeaning').classList.add('hidden');$('cardExample').classList.add('hidden');$('flipHint').textContent='Chạm vào thẻ để xem nghĩa';
+}
+function flip(){if(!current||revealed)return;revealed=true;$('cardMeaning').classList.remove('hidden');if(current.ex)$('cardExample').classList.remove('hidden');$('cardHint').textContent='NGHĨA TIẾNG VIỆT';$('flipHint').textContent='Bạn đã nhớ từ này chưa?'}
+function cardMark(remember){if(!revealed){flip();return}if(remember){correct++;seen.add(current.id)}else{missed.set(current.id,current)}idx++;showCard()}
+function finish(){
+ $('quizArea').classList.add('hidden');$('cardArea').classList.add('hidden');$('resultArea').classList.remove('hidden');$('progressFill').style.width='100%';
+ $('resultCorrect').textContent=correct;$('resultWrong').textContent=wrong;$('resultNeed').textContent=missed.size;
+ let arr=[...missed.values()];$('reviewWords').innerHTML=arr.length?'<h3>Từ cần ôn lại</h3><ul class="list">'+arr.map(v=>`<li><b>${escapeHtml(v.ko)}</b> — ${escapeHtml(v.vi)} <span class="small">(Bài ${v.lesson})</span></li>`).join('')+'</ul>':'<div class="note">Tuyệt vời! Không có từ nào được đánh dấu cần ôn lại trong phiên này.</div>';
+ $('retry').classList.toggle('hidden',!arr.length);
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('start').onclick=()=>{refreshBank();let n=+$('lesson').value;begin(vocab.filter(v=>v.lesson<=n),$('mode').value)};
+$('lesson').onchange=updateStats;$('mode').onchange=()=>{};
+$('next').onclick=nextQuestion;$('exit').onclick=finish;$('flashcard').onclick=flip;$('flashcard').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}};
+$('needReview').onclick=()=>cardMark(false);$('remembered').onclick=()=>cardMark(true);$('cardNext').onclick=()=>{idx++;showCard()};
+$('retry').onclick=()=>{let a=[...missed.values()];begin(a,mode==='cards'?'cards':'short')};
+$('restart').onclick=()=>{let n=+$('lesson').value;begin(vocab.filter(v=>v.lesson<=n),mode)};
+$('backConfig').onclick=()=>{$('practice').classList.add('hidden');$('quizArea').classList.remove('hidden');$('resultArea').classList.add('hidden')};
+$('saveBank').onclick=()=>{refreshBank();try{localStorage.setItem('hikorean_vocab_bank',$('bank').value);$('bankStatus').textContent=`Đã lưu ${vocab.length} từ trong trình duyệt này.`}catch(e){$('bankStatus').textContent=`Đã đọc ${vocab.length} từ. Trình duyệt không cho phép lưu tự động; hãy tải dữ liệu TXT để giữ bản sao.`}};
+$('downloadBank').onclick=()=>{let blob=new Blob([$('bank').value],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Hi_Korean_Ngan_hang_tu_vung.txt';a.click();URL.revokeObjectURL(a.href)};
+$('loadSample').onclick=()=>{if(confirm('Thay nội dung ngân hàng hiện tại bằng dữ liệu mẫu?')){$('bank').value=SAMPLE;refreshBank();$('bankStatus').textContent='Đã khôi phục 157 từ vựng từ file Excel 15 bài.'}};
+try{let saved=localStorage.getItem('hikorean_vocab_bank');if(saved)$('bank').value=saved}catch(e){}
+$('lesson').innerHTML='<option value="15">Ôn tập bài 1 đến bài 15</option>';refreshBank();$('lesson').value='15';updateStats();
+</script>
+</body></html>
